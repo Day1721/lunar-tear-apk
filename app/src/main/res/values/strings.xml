@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lunar Tear</string>
+
+    <string name="notif_channel_name">Server status</string>
+    <string name="notif_channel_desc">Shows whether the local game server is running.</string>
+
+    <string name="notif_running">Server running</string>
+    <string name="notif_starting">Server starting…</string>
+    <string name="notif_stopping">Server stopping…</string>
+    <string name="notif_stopped">Server stopped</string>
+    <string name="notif_error">Server failed to start</string>
+
+    <string name="action_stop">Stop</string>
+</resources>

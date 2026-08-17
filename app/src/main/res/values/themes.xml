@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Colours and typography come from Compose's MaterialTheme; this only needs to
+      keep the platform from drawing an ActionBar. Parenting on the framework
+      theme avoids pulling in appcompat or the Material XML library.
+    -->
+    <style name="Theme.LunarTear" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@color/ic_launcher_background</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+</resources>

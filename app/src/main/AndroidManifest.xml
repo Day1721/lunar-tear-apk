@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Required to create sockets at all, including loopback-only listeners. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!--
+      specialUse rather than dataSync: Android 15 caps dataSync foreground
+      services at 6 hours per day, which would kill a running game server.
+    -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!--
+      The asset tree is multi-GB, user-supplied, and read through Go's os package
+      and http.ServeFile, which cannot open SAF content:// URIs. It must also be
+      writable: internal/runtime/holder.go:85 calls os.Chtimes on the master-data
+      file. Hence plain POSIX access to /sdcard/LunarTear.
+    -->
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <!-- Offered to the user so Doze cannot freeze the server mid-session. -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.LunarTear"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          Runs in its own process on purpose. internal/masterdata has 24
+          log.Fatal sites reached while parsing user-supplied master data, and
+          log.Fatal is os.Exit: isolating the Go runtime means a bad asset file
+          reports an error instead of taking the UI down with it, and gives Stop
+          a killProcess fallback if Go ever wedges.
+        -->
+        <service
+            android:name=".ServerService"
+            android:process=":server"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Runs a local game server on loopback for a game client on this device; must stay alive for the whole play session." />
+        </service>
+    </application>
+</manifest>

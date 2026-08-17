@@ -1,0 +1,24 @@
+# Android / Gradle
+*.iml
+.gradle/
+local.properties
+.idea/
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Generated Go artifacts (rebuild with scripts/build-go.sh)
+app/libs/*.aar
+app/libs/*-sources.jar
+app/src/main/jniLibs/
+
+# Go
+goglue/vendor/
+
+# OS junk
+.DS_Store

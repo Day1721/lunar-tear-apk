@@ -1,0 +1,3 @@
+[submodule "external/lunar-tear"]
+	path = external/lunar-tear
+	url = https://github.com/Walter-Sparrow/lunar-tear.git
